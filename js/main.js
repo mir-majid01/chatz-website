@@ -15,11 +15,14 @@
   var initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
   themeRoot.setAttribute("data-theme", initialTheme);
   themeRoot.style.colorScheme = initialTheme;
+  var themeColorMeta = document.querySelector('meta[name="theme-color"]');
   var themeButton = document.getElementById("themeToggle");
   function applyTheme(theme) {
     var nextTheme = theme === "light" ? "light" : "dark";
+    themeRoot.classList.add("theme-switching");
     themeRoot.setAttribute("data-theme", nextTheme);
     themeRoot.style.colorScheme = nextTheme;
+    if (themeColorMeta) themeColorMeta.setAttribute("content", nextTheme === "light" ? "#f8f7fa" : "#070709");
     if (themeButton) {
       var lightNow = nextTheme === "light";
       themeButton.setAttribute("aria-label", lightNow ? "Switch to dark theme" : "Switch to light theme");
@@ -31,6 +34,9 @@
         : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
       if (label) label.textContent = lightNow ? "Light" : "Dark";
     }
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () { themeRoot.classList.remove("theme-switching"); });
+    });
   }
   applyTheme(initialTheme);
   if (themeButton) themeButton.addEventListener("click", function () {
