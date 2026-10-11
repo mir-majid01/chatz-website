@@ -1411,3 +1411,81 @@ html[data-theme="light"] .theme-toggle { color: var(--t1); border-color: var(--l
   .theme-toggle { min-width: 38px; width: 38px; padding: 0; }
   .theme-toggle__label { display: none; }
 }
+
+
+/* ---------- Mobile screenshot fixes (2026-10) ---------- */
+/* Prevent narrow-device overflow and give long-form pages a readable measure. */
+html { max-width: 100%; overflow-x: clip; }
+body { min-width: 0; overflow-x: clip; }
+img, svg, video, canvas { max-width: 100%; }
+.container { min-width: 0; }
+
+@media (max-width: 900px) {
+  .nav__inner { gap: 12px; }
+  .nav__actions { gap: 8px; }
+  .nav__actions > .btn { display: none; }
+  .nav__burger { min-width: 44px; min-height: 44px; }
+  .theme-toggle { min-height: 44px; min-width: 44px; }
+  .mobile-menu { max-height: calc(100dvh - 64px); overflow-y: auto; }
+  .mobile-menu__links a { min-height: 44px; display: flex; align-items: center; }
+  .hero__inner { padding-top: clamp(112px, 17vh, 150px); }
+  .hero__stage { width: 100%; min-width: 0; }
+  .hero__phone { margin-inline: auto; }
+}
+
+@media (max-width: 620px) {
+  .container { width: min(100% - 36px, 1160px); }
+  .section { padding-block: 64px; }
+  .hero__inner { padding-top: 108px; padding-bottom: 34px; }
+  .hero__title { font-size: clamp(2.45rem, 11vw, 3.65rem); line-height: 1.02; }
+  .hero__sub, .lede { font-size: 15.5px; line-height: 1.7; }
+  .hero__ctas { width: 100%; display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .hero__ctas .btn { width: 100%; min-height: 48px; }
+  .hero__meta { font-size: 12px; line-height: 1.6; }
+  .hero__stage { margin-top: 18px; }
+  .phone { width: min(300px, 82vw); }
+  .strip__inner { justify-content: center; flex-wrap: wrap; gap: 10px 14px; padding-block: 16px; font-size: 11px; }
+  .product__list { grid-template-columns: 1fr 1fr; }
+  .demo__tabs { overflow-x: auto; grid-template-columns: repeat(5, minmax(64px, 1fr)); }
+  .doc { padding-top: 18px; }
+  .page-hero { padding-top: 112px; }
+  .h1 { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+  .doc__body { width: 100%; min-width: 0; }
+  .doc__sec { margin-bottom: 34px; }
+  .doc__sec h2 { font-size: 20px; }
+  .doc__sec p, .doc__sec ul { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }
+  .doc__updated { padding: 15px; margin-bottom: 30px; }
+  .faq-search { width: 100%; max-width: none; padding: 12px 15px; }
+  .acc summary { padding: 16px; gap: 12px; font-size: 15px; }
+  .acc__body { padding: 0 16px 18px; font-size: 14.5px; }
+  .guide { padding: 19px; }
+  .guide__head { align-items: flex-start; }
+  .guide__head h3 { font-size: 16px; line-height: 1.45; }
+  .contact-card { align-items: flex-start; padding: 15px; gap: 10px; }
+  .contact-card > div { min-width: 0; flex: 1 1 calc(100% - 36px); }
+  .contact-card span { display: block; overflow-wrap: anywhere; line-height: 1.6; }
+  .contact-card em { margin-left: 28px; white-space: normal; }
+  .faq-foot { align-items: flex-start; padding: 16px; line-height: 1.65; }
+  .footer__base { flex-direction: column; align-items: flex-start; }
+  .footer__base > span { overflow-wrap: anywhere; }
+}
+
+@media (max-width: 420px) {
+  .container { width: calc(100% - 32px); }
+  .hero-chip { display: none !important; }
+  .product__list { grid-template-columns: 1fr; }
+  .hero__title { font-size: clamp(2.35rem, 10.5vw, 2.9rem); }
+  .nav__inner { height: 60px; }
+  .nav.is-scrolled .nav__inner { height: 56px; }
+  .brand__word { font-size: 20px; }
+  .theme-toggle { width: 44px; }
+  .nf__card { padding: 32px 22px; }
+}
+
+/* Keep the illustrated app UI intentionally dark in either site theme. */
+html[data-theme="light"] .phone,
+html[data-theme="light"] .phone__screen,
+html[data-theme="light"] .mini-ui,
+html[data-theme="light"] .demo__stage {
+  color-scheme: dark;
+}
