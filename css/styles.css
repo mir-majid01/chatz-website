@@ -96,6 +96,25 @@ h1, h2, h3, h4 { line-height: 1.12; text-wrap: balance; }
   border-radius: 4px;
 }
 
+/* ---------- Native tap feedback ---------- */
+/* Replace the browser's default blue touch flash with ChatZ's pink accent. */
+:where(a, button, [role="button"], summary, label, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+@media (hover: none) {
+  .btn:active {
+    transform: scale(0.985);
+    box-shadow: 0 0 0 3px rgba(242, 99, 171, 0.14), 0 8px 24px -14px var(--accent-glow);
+  }
+  .nav__burger:active,
+  .mobile-menu__links a:active,
+  .textlink:active {
+    color: var(--accent);
+    background-color: var(--accent-soft);
+  }
+}
+
 .skip-link {
   position: fixed; top: -60px; left: 16px; z-index: 200;
   background: var(--accent-deep); color: #fff;
