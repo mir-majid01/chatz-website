@@ -267,16 +267,26 @@
   if (FINE_POINTER && !REDUCED) {
     var cursor = document.getElementById("cursor");
     if (cursor) {
-      var cx = -100, cy = -100, tx = cx, ty = cy, seen = false;
+      var cx = -100, cy = -100, tx = cx, ty = cy, seen = false, cursorRaf = null;
+      function animateCursor() {
+        cursorRaf = null;
+        cx += (tx - cx) * 0.22;
+        cy += (ty - cy) * 0.22;
+        cursor.style.transform = "translate(" + cx + "px," + cy + "px)";
+        if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
+          cursorRaf = requestAnimationFrame(animateCursor);
+        }
+      }
       document.addEventListener("pointermove", function (e) {
         tx = e.clientX; ty = e.clientY;
-        if (!seen) { seen = true; cx = tx; cy = ty; cursor.classList.add("is-on"); }
+        if (!seen) {
+          seen = true; cx = tx; cy = ty;
+          cursor.style.transform = "translate(" + cx + "px," + cy + "px)";
+          cursor.classList.add("is-on");
+        } else if (!cursorRaf) {
+          cursorRaf = requestAnimationFrame(animateCursor);
+        }
       }, { passive: true });
-      (function loop() {
-        cx += (tx - cx) * 0.22; cy += (ty - cy) * 0.22;
-        cursor.style.transform = "translate(" + cx + "px," + cy + "px)";
-        requestAnimationFrame(loop);
-      })();
       var HOVER = "a, button, [role='button'], summary, input, label.p-toggle, .p-friend[data-goto-friend]";
       document.addEventListener("pointerover", function (e) {
         cursor.classList.toggle("is-link", !!e.target.closest(HOVER));
