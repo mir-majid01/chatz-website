@@ -167,16 +167,21 @@
     menu.querySelectorAll(".mobile-menu__links a").forEach(function (a, i) {
       a.style.setProperty("--i", i);
     });
-    var setMenu = function (open) {
+    var setMenu = function (open, restoreFocus) {
       burger.setAttribute("aria-expanded", String(open));
       burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       menu.classList.toggle("is-open", open);
-      if (open) lockY = window.scrollY;
+      if (open) {
+        lockY = window.scrollY;
+        var firstLink = menu.querySelector(".mobile-menu__links a");
+        if (firstLink) firstLink.focus();
+      }
       document.body.style.overflow = open ? "hidden" : "";
       /* overflow:hidden can clamp the viewport scroll offset in some engines;
          put it back so the exact position survives open/close cycles.
          Instant, not smooth: the restore must land atomically. */
       if (window.scrollY !== lockY) window.scrollTo({ top: lockY, behavior: "instant" });
+      if (!open && restoreFocus) burger.focus();
     };
     burger.addEventListener("click", function () {
       setMenu(burger.getAttribute("aria-expanded") !== "true");
@@ -185,7 +190,26 @@
       if (e.target.closest("a")) setMenu(false);
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && menu.classList.contains("is-open")) setMenu(false);
+      if (!menu.classList.contains("is-open")) return;
+      if (e.key === "Escape") {
+        setMenu(false, true);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      var focusables = Array.prototype.slice.call(menu.querySelectorAll("a[href], button:not([disabled])"));
+      if (!focusables.length) {
+        e.preventDefault();
+        burger.focus();
+        return;
+      }
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !menu.contains(document.activeElement))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !menu.contains(document.activeElement))) {
+        e.preventDefault();
+        first.focus();
+      }
     });
   }
 
