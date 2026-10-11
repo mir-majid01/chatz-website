@@ -1526,3 +1526,61 @@ html[data-theme="light"] .theme-toggle:hover {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* ---------- Final polish: accessible states, stable theme switching ---------- */
+/* Theme changes are instant; motion remains reserved for deliberate interactions. */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
+}
+html { scrollbar-color: rgba(130, 120, 140, .55) transparent; }
+html[data-theme="light"] { scrollbar-color: rgba(93, 83, 99, .35) transparent; }
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(93, 83, 99, .28);
+  border-color: var(--bg);
+}
+html[data-theme="light"] ::selection { background: rgba(185, 35, 117, .2); color: #241a29; }
+html[data-theme="light"] .textlink:hover { color: var(--accent-deep); }
+html[data-theme="light"] .section--tint {
+  background: radial-gradient(60% 50% at 50% 0%, rgba(35, 24, 42, .025), transparent 70%), var(--bg-2);
+  border-color: var(--line);
+}
+html[data-theme="light"] .hero__fade { background: linear-gradient(transparent, var(--bg)); }
+html[data-theme="light"] .theme-toggle:focus-visible,
+html[data-theme="light"] .btn:focus-visible,
+html[data-theme="light"] .nav__burger:focus-visible {
+  outline-color: #9f1f65;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(185,35,117,.13);
+}
+:where(a, button, [role="button"], summary) { touch-action: manipulation; }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { will-change: transform; }
+}
+@media (max-width: 760px) {
+  .nav__inner { gap: 10px; }
+  .nav__actions { margin-left: auto; }
+  .theme-toggle { flex: 0 0 44px; min-width: 44px; width: 44px; min-height: 44px; }
+  .nav__burger { min-width: 44px; min-height: 44px; }
+  .nav__actions > .btn { min-height: 40px; }
+  .mobile-menu__links a { min-height: 44px; }
+}
+@media (max-width: 360px) {
+  .brand__word { font-size: 17px; }
+  .nav__actions { gap: 6px; }
+  .nav__actions > .btn { padding-inline: 12px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] *, html[data-theme] *::before, html[data-theme] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .hero__phone { will-change: auto; }
+}
